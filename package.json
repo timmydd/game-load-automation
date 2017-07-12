@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.5.0",
     "phantomjs-prebuilt": "^2.1.14",
     "webpage": "^0.3.0"
   }
