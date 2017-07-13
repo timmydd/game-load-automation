@@ -37,10 +37,11 @@ var page = require('webpage').create(),
         'gny3l9x6zg',
         'gbnh54p7hr',
     ],
-    timeOut = 30000;
+    timeOut = 60000;
 
 var timer;
 var i = 0;
+var areFailures = false;
 
 page.onResourceRequested = onResourceRequested;
 
@@ -64,13 +65,15 @@ loadURL();
 
 function loadURL(){
     page.open(baseURL + playpenGID[i], function (status) {
+        areFailures = false;
         console.log("Starting test for GID: " + playpenGID[i]);
         if (status !== 'success') {
+            areFailures = true; 
             testFinished('Bad URL: ' + playpenGID[i]);
         } else {
-
             timer = setTimeout(function () {
-                testFinished("Timeout");            
+                areFailures = true;
+                testFinished("timeout");           
             }, timeOut);
         }
     });
@@ -79,6 +82,9 @@ function loadURL(){
 function testFinished(status){
     clearTimeout(timer);
     console.log('Test: ' + status);
+    if(areFailures){
+        printScreen();
+    }
     //page.render('screenshots/' + page.title + '.png');
     // Phantom crashes if exit is not deferred (from onResourceRequested callback, anyway):
     setTimeout(function () {
@@ -106,4 +112,8 @@ function isGameLoadedStat(requestData) {
     var hasTrueRe = /sa\.bbc\.co\.uk.*\baction_type=true\b/;
 
     return hasLoadedRe.test(requestData.url) && hasTrueRe.test(requestData.url);
+}
+
+function printScreen(){
+    page.render('screenshots/' + page.title + '.png');
 }
