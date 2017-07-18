@@ -1,7 +1,7 @@
 var page = require('webpage').create(),
     system = require('system'),
     baseURL = 'http://play.bbc.co.uk/play/pen/',
-        timeOut = 100000,
+    timeOut = 70000,
     timer,
     i = 0,
     areFailures = false,
@@ -45,7 +45,6 @@ var page = require('webpage').create(),
         'g1rwp3ss1l',
         'g55rpf7wzj',
         'gpz3fxc1yy',
-        'g994pf6scp',
         'gjvpn7xs1z',
         'g3dghr1qwp',
         'gy68cnwf16',
@@ -350,6 +349,18 @@ var page = require('webpage').create(),
 
 page.onResourceRequested = onResourceRequested;
 
+page.onError = function(msg, trace) {
+    var msgStack = ['ERROR: ' + msg];
+    if (trace && trace.length) {
+        msgStack.push('TRACE:');
+        trace.forEach(function(t) {
+            msgStack.push(' -> ' + t.file + ': ' + t.line + (t.function ? ' (in function "' + t.function + '")' : ''));
+        });
+    }
+    // uncomment to log into the console 
+    // console.error(msgStack.join('\n'));
+};
+
 function onResourceRequested(requestData, networkRequest) {
     if (isStat(requestData)) {
         //' Paranoia: May keep things a little more stable if stats calls return quickly:
@@ -419,5 +430,5 @@ function isGameLoadedStat(requestData) {
 }
 
 function printScreen(){
-    page.render('screenshots/' + page.title + '.png');
+    page.render('screenshots/' + page.title + 'GID:' + playpenGID[i] + '.png');
 }
