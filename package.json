@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "fs": "0.0.1-security",
     "phantomjs-prebuilt": "^2.1.14",
     "webpage": "^0.3.0"
   }
