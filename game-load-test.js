@@ -115,7 +115,7 @@ function testFinished(status){
     console.log('Test: ' + status);
     if(areFailures){
         printScreen();
-        console.log(failureCounter + 'Failed ' + passCounter + 'Passed');
+        console.log(failureCounter + ' Failed ' + passCounter + ' Passed');
     }
     // Phantom crashes if exit is not deferred (from onResourceRequested callback, anyway):
     setTimeout(function () {
