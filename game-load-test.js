@@ -1,6 +1,7 @@
 var page = require('webpage').create(),
     system = require('system'),
     fs = require('fs'),
+    gamenames = require('./game-names.js'),
     baseURL = 'https://www.test.bbc.co.uk/',
     timeOut = 100000,
     timer,
@@ -8,50 +9,7 @@ var page = require('webpage').create(),
     areFailures = false,
     failureCounter = 0,
     passCounter = 0,
-    gameName = [
-        'cbeebies/games/my-swashbuckle-adventure',
-        'cbbc/games/the-next-step',
-        'cbbc/games/danger-mouse-game',
-        'cbeebies/games/peter-rabbit',
-        'cbeebies/games/my-pet-and-me-game',
-        'cbeebies/games/my-pet-and-me-game-alba',
-        'cbeebies/games/my-pet-and-me-game-gaeilge',
-        'cbbc/games/the-worst-witch-magic-adventure-game',
-        'cbeebies/games/the-furchester-hotel-a-helping-hand',
-        'cbeebies/games/go-jetters-global-glitch',
-        'cbeebies/games/alba-go-jetters-crathadh-cruinneil',
-        'cbbc/games/the-dumping-ground-on-a-mission',
-        'cbeebies/games/danger-mouse-danger-dash',
-        'cbbc/games/bp-hackers-nosey-adventure-game',
-        'cbbc/games/pets-factor-furry-friends',
-        'cbbc/games/dixi-4',
-        'cbbc/games/secret-life-of-boys-2a',
-        'cbeebies/games/topsy-and-tim-at-the-farm',
-        'cbeebies/games/bing-build-and-play',
-        'cbeebies/games/teletubbies-play-day',
-        'cbbc/games/operation-ouch-the-snot-apocalypse',
-        'cbbc/games/bottersnikes-and-gumbles-gumble-run',
-        'cbeebies/games/andys-prehistoric-park',
-        'cbeebies/games/something-special-the-looking-game',
-        'cbbc/games/horrible-histories-awesome-women-quiz',
-        'cbeebies/games/little-roy-wonder-doodler',
-        'cbbc/games/airmageddon-flight-patrol-game',
-        'cbbc/games/little-roy-wonder-doodler',
-        'cbbc/games/wolfblood-comic-alpha',
-        'cbbc/games/eve-comic',
-        'cbeebies/games/advent-calendar-2016',
-        'cbeebies/games/my-pet-and-me-game-cymraeg',
-        'cbbc/games/wolfblood-hunters-moon',
-        'cbeebies/games/advent-calendar',
-        'cbeebies/games/down-on-the-farm-a-year-on-your-farm',
-        'cbeebies/games/jamillah-and-aladdin-cave-of-wonders',
-        'cbbc/games/absolute-genius-smash-bang-boom',
-        'cbeebies/games/apple-tree-house-game',
-        'cbeebies/games/charlie-and-lola-making-and-doing',
-        'cbeebies/games/justins-house-little-monsters-cheeky-chase-game',
-        'cbeebies/games/pablo-art-world-adventure'
-    ];
-
+    gameName = gamenames.GameNames();
 
 page.onResourceRequested = onResourceRequested;
 
@@ -63,12 +21,10 @@ page.onError = function(msg, trace) {
             msgStack.push(' -> ' + t.file + ': ' + t.line + (t.function ? ' (in function "' + t.function + '")' : ''));
         });
     }
-
-    fs.appendFile('server.log', msgStack.join('\n'), function (err) {
-        if (err) return console.log(err);
-        console.log('Appended!');
-    });
+    // uncomment to log into the console 
+    // console.error(msgStack.join('\n'));
 };
+
 
 function onResourceRequested(requestData, networkRequest) {
     if (isStat(requestData)) {
