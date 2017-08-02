@@ -1,7 +1,7 @@
 var page = require('webpage').create(),
     system = require('system'),
     fs = require('fs'),
-    gamenames = require('./game-names.js'),
+    gamenames = require('./gmi-game-names.js'),
     baseURL = 'https://www.test.bbc.co.uk/',
     timeOut = 100000,
     timer,
@@ -50,7 +50,11 @@ function loadURL(){
         areFailures = false;
         console.log("Starting test for GID: " + gameName[i]);
         page.evaluate(function() {
-            document.getElementsByClassName('game-wrapper__cta-button')[0].click();            
+            document.getElementsByClassName('game-wrapper__cta-button')[0].click();    
+            timer = setTimeout(function () {
+                document.getElementsByClassName('game-wrapper__cta-button') [0].click();
+            }, 10000);
+            
         });
         if (status !== 'success') {
             areFailures = true; 
@@ -71,7 +75,6 @@ function testFinished(status){
     console.log('Test: ' + status);
     if(areFailures){
         printScreen();
-        console.log(failureCounter + ' Failed ' + passCounter + ' Passed');
     }
     // Phantom crashes if exit is not deferred (from onResourceRequested callback, anyway):
     setTimeout(function () {
@@ -81,6 +84,8 @@ function testFinished(status){
 
         } else {
             loadURL();
+            console.log(failureCounter + ' Failed ' + passCounter + ' Passed');
+
         }
     }, 1);
 }
