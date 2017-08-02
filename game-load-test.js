@@ -9,6 +9,7 @@ var page = require('webpage').create(),
     areFailures = false,
     failureCounter = 0,
     passCounter = 0,
+    timeoutCounter = 0,
     gameName = gamenames.GameNames();
 
 page.onResourceRequested = onResourceRequested;
@@ -63,7 +64,7 @@ function loadURL(){
         } else {
             timer = setTimeout(function () {
                 areFailures = true;
-                failureCounter ++;
+                timeoutCounter ++;
                 testFinished("timeout");           
             }, timeOut);
         }
@@ -84,7 +85,7 @@ function testFinished(status){
 
         } else {
             loadURL();
-            console.log(failureCounter + ' Failed ' + passCounter + ' Passed');
+            console.log(failureCounter + ' Failed ' + passCounter + ' Passed' + timeoutCounter + ' Timed out');
 
         }
     }, 1);
